@@ -14,6 +14,8 @@ b. if point (a) is not available:
 
 ## 2. Connecting to hosting via SSH
 
+Open your [terminal (console)](https://en.wikipedia.org/wiki/Terminal_emulator) and run the command:
+
 ```sh
 ssh username@primary.host
 ```
@@ -21,11 +23,13 @@ ssh username@primary.host
 * `username` — [Find your username for Linux Hosting](https://in.godaddy.com/help/find-my-ftp-username-for-linux-hosting-16100)
 * `primary.host` — [Find your primary host on GoDaddy hosting](https://in.godaddy.com/help/find-my-gen-4-server-ip-address-24727)
 
+Upon successful execution of the command, you will get remote access to the hosting. You will notice this by the changed device name in your terminal. All subsequent commands will be executed on the hosting itself.
+
 ## 3. Install acme.sh (Let's Encrypt client)
 
-[Client repository](https://github.com/acmesh-official/acme.sh)
+Just for reference: [acme.sh source code and docs](https://github.com/acmesh-official/acme.sh)
 
-Run in shell:
+To install `acme.sh`, you need to run one command:
 
 ```sh
 curl https://get.acme.sh | sh
@@ -41,19 +45,25 @@ Go to step 2. Then step 4.
 
 ## 4. Install post-renew hook
 
-Download [post-renew-hook.php](post-renew-hook.php) file to your computer.
+You will need a script to automatically apply new SSL certificates to the GoDaddy server.
+
+Download [post-renew-hook.php](post-renew-hook.php) script to your computer.
 
 [Open GoDaddy file manager in your browser](https://in.godaddy.com/help/manage-files-in-my-linux-hosting-account-12426)
 
-Copy `post-renew-hook.php` script file to the folder with acme.sh: `~/.acme.sh/`
+[Show hidden files in file manager](https://in.godaddy.com/help/show-hidden-files-in-my-linux-hosting-account-32171)
+
+Copy `post-renew-hook.php` script file to the folder with acme.sh: `/home/<username>/.acme.sh/`
 
 ## 5. Getting GoDaddy API Keys
+
+Also, you need keys to work `acme.sh` with the GoDaddy server.
 
 As stated in the `acme.sh` documentation: [Use GoDaddy.com domain API to automatically issue cert](https://github.com/acmesh-official/acme.sh/wiki/dnsapi#4-use-godaddycom-domain-api-to-automatically-issue-cert)
 
 You need to login to your GoDaddy account to get your API Key and Secret.
 
-[https://developer.godaddy.com/keys/]
+<https://developer.godaddy.com/keys/>
 
 Create a Production key, instead of a Test key.
 
