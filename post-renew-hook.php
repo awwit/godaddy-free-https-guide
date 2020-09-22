@@ -24,7 +24,9 @@ class AcmeHookPostRenew {
   }
 
   public static function execute(string $domain, bool $verbose = FALSE): void {
-    if (!is_dir("{$_SERVER['HOME']}/.acme.sh/{$domain}")) {
+    $dir = "{$_SERVER['HOME']}/.acme.sh/{$domain}";
+
+    if (!is_dir($dir)) {
       throw new Exception("Data files for \"{$domain}\" domain not found.");
     }
 
@@ -42,8 +44,8 @@ class AcmeHookPostRenew {
 
     if ($verbose) { echo "Update cert for {$domain}\n"; }
 
-    $cert = urlencode(file_get_contents("{$_SERVER['HOME']}/.acme.sh/{$domain}/{$domain}.cer"));
-    $key = urlencode(file_get_contents("{$_SERVER['HOME']}/.acme.sh/{$domain}/{$domain}.key"));
+    $cert = urlencode(file_get_contents("{$dir}/{$domain}.cer"));
+    $key = urlencode(file_get_contents("{$dir}/{$domain}.key"));
 
     self::updateCert($domain, $cert, $key);
 
@@ -57,7 +59,12 @@ class AcmeHookPostRenew {
   }
 }
 
-if (php_sapi_name() === 'cli') {
+/**
+ * Execute this script only if it is specified as initial and called from the command line.
+ *
+ * You can include this file in your script and manually call the `AcmeHookPostRenew::execute` function.
+ */
+if (php_sapi_name() === 'cli' && $argc >= 1 && realpath($argv[0]) === __FILE__) {
   if ($argc < 2) {
     echo 'Please enter a domain.', "\n";
     exit(1);
